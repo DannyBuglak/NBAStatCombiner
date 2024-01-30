@@ -45,7 +45,7 @@ else:
     # Get the game log for the inputted player for inputted season
     gameLog = playergamelog.PlayerGameLog(playerId, season)
 
-    # Get all the needed data (Output w/o second set of brackets to find header values]
+    # Get all the needed data (Output w/o second set of brackets to find header values)
     gameDate = gameLog.get_data_frames()[0]['GAME_DATE']
     matchUp = gameLog.get_data_frames()[0]['MATCHUP']
     winLoss = gameLog.get_data_frames()[0]['WL']
