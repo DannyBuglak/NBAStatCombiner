@@ -7,8 +7,10 @@ The most recent version is main_v3.py.
 main_v3-repl.py is the version supposed to run on repl.it.
 
 NBA Stat Combiner allows a user to find any player of their choosing and find relavent statistics from the current season. 
-The output includes multiple .csv files with the requested thresholds from the user. 
-The sportsbook odds are also calculated to help see how likely something is to occur.
+The output includes multiple .csv files with the requested thresholds from the user into the output directory. 
+The sportsbook odds are also calculated and outputted to help see how likely something is to occur.
+
+The archive folder includes older versions of the program.
 
 The .csv files found in the repository are what the outputs look like.
 
