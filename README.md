@@ -8,6 +8,8 @@ NBA Stat Combiner allows a user to find any player of their choosing and find re
 The output includes multiple .csv files with the requested thresholds from the user. 
 The sportsbook odds are also calculated to help see how likely something is to occur.
 
+The .csv files found in the repository are what the outputs look like.
+
 ## Credit
 https://github.com/swar/nba_api/tree/master
 
