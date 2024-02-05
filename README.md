@@ -2,7 +2,7 @@
 
 This program runs on the Python terminal. 
 
-The most recent version is main_v2.py.
+The most recent version is main_v3.py.
 
 NBA Stat Combiner allows a user to find any player of their choosing and find relavent statistics from the current season. 
 The output includes multiple .csv files with the requested thresholds from the user. 
