@@ -32,7 +32,7 @@ def menu():
         if sublist[3][0] == letter and sublist[4]:
             print(i, "-", sublist[3])
 
-    player_id = int(input("Chose Player Number: "))
+    player_id = int(input("Choose Player Number: "))
     return player_id
 
 
@@ -44,9 +44,7 @@ print("\n -> Player Selected: " + playerName + " <- ")
 # Find the player id
 playerId = data.players[playerIndex][0]
 
-print("\nEnter a valid date.")
-print("Year must be 2000+ and format is: year - year+1 (2019 = 2019-20 season)")
-season = input("Season: ")
+season = "2023"
 
 pd.set_option('display.max_columns', None)          # Have all cols be available
 pd.set_option('display.max_rows', None)             # Have all rows be available
@@ -55,13 +53,20 @@ pd.set_option('display.max_rows', None)             # Have all rows be available
 gameLog = playergamelog.PlayerGameLog(playerId, season)
 
 # Get all the needed data (Output w/o second set of brackets to find header values)
-gameDate = gameLog.get_data_frames()[0]['GAME_DATE']
+gameDate = gameLog.get_data_frames()[0]['GAME_DATE'].str[:6]
 matchUp = gameLog.get_data_frames()[0]['MATCHUP']
 winLoss = gameLog.get_data_frames()[0]['WL']
 points = gameLog.get_data_frames()[0]['PTS']
 rebounds = gameLog.get_data_frames()[0]['REB']
 assists = gameLog.get_data_frames()[0]['AST']
 threes = gameLog.get_data_frames()[0]['FG3M']
+steals = gameLog.get_data_frames()[0]['STL']
+blocks = gameLog.get_data_frames()[0]['BLK']
+minutes = gameLog.get_data_frames()[0]['MIN']
+personalFouls = gameLog.get_data_frames()[0]['PF']
+parPerMinute = round((points + assists + rebounds) / minutes, 3)
+paPerMinute = round((points + assists) / minutes, 3)
+prPerMinute = round((points + rebounds) / minutes, 3)
 
 # A dataframe for points, assists, rebounds to calculate P+A+R
 PAR_Dataframe = pd.DataFrame({"points": points, "assists": assists, "rebounds": rebounds})
@@ -78,18 +83,24 @@ PR_Dataframe = pd.DataFrame({"points": points, "rebounds": rebounds})
 # Calculate Points+Rebounds and add to data frame later
 PR = PR_Dataframe.sum(axis=1)
 
-# Calculate the averages of everything and round to 2 decimal places
+# Calculate the averages of everything
 averagePPG_Season = round(sum(points)/len(points), 1)
 averageAST_Season = round(sum(assists)/len(assists), 1)
 averageREB_Season = round(sum(rebounds)/len(rebounds), 1)
 averagePAR_Season = round(sum(PAR) / len(PAR_Dataframe), 1)
 averagePA_Season = round(sum(PA) / len(PA_Dataframe), 1)
 averagePR_Season = round(sum(PR) / len(PR_Dataframe), 1)
+averageMin_Season = round(sum(gameLog.get_data_frames()[0]['MIN']) / len(gameLog.get_data_frames()[0]['MIN']), 3)
+averagePARMin_Season = round(averagePAR_Season / averageMin_Season, 3)
+averagePAMin_Season = round(averagePA_Season / averageMin_Season, 3)
+averagePRMin_Season = round(averagePR_Season / averageMin_Season, 3)
 
 # Create the pandas data frame and print, save for later for output
 outputDataFrame = pd.DataFrame({'Game Date:': gameDate, 'Match Up:': matchUp, 'Win/Loss:': winLoss,
-                                'Points:': points, 'Rebounds:': rebounds, 'Assists:': assists,
-                                'Threes Made': threes, 'Pts+Asts+Rebs:': PAR, 'Pts+Asts:': PA, 'Pts+Rebs:': PR})
+                                'Minutes': minutes, 'Points:': points, 'Rebounds:': rebounds, 'Assists:': assists,
+                                'Pts+Asts+Rebs:': PAR, 'Pts+Asts:': PA, 'Pts+Rebs:': PR,
+                                'PAR/Min:': parPerMinute, 'PA/Min': paPerMinute, 'PR/Min': prPerMinute,
+                                'Threes Made:': threes, 'Blocks:': blocks, 'Steals:': steals,  'Personal Fouls:': personalFouls})
 
 print(outputDataFrame)
 
@@ -100,15 +111,23 @@ print("Avg PPG:", averagePPG_Season,
       "\nAvg REB:", averageREB_Season,
       "\nAvg PAR:", averagePAR_Season,
       "\nAvg PR:", averagePR_Season,
-      "\nAvg PA:", averagePA_Season)
+      "\nAvg PA:", averagePA_Season,
+      "\nAvg Min:", averageMin_Season,
+      "\nAvg PAR/min:", averagePARMin_Season,
+      "\nAvg PR/min:", averagePRMin_Season,
+      "\nAvg PA/min:", averagePAMin_Season)
 
 # This dataframe will have the Season summarized info in it
-summarizedSeasonDataFrame = pd.DataFrame({"Avg PPG Season": [averagePPG_Season],
-                "Avg AST Season:": [averageAST_Season],
-                "Avg REB Season:": [averageREB_Season],
-                "Avg PAR Season:": [averagePAR_Season],
-                "Avg PR Season:": [averagePR_Season],
-                "Avg PA Season:": [averagePA_Season]})
+summarizedSeasonDataFrame = pd.DataFrame({"Avg Min Season:": [averageMin_Season],
+                    "Avg PPG Season:": [averagePPG_Season],
+                    "Avg AST Season:": [averageAST_Season],
+                    "Avg REB Season:": [averageREB_Season],
+                    "Avg PAR Season:": [averagePAR_Season],
+                    "Avg PR Season:": [averagePR_Season],
+                    "Avg PA Season:": [averagePA_Season],
+                    "Avg PAR/min Season:": [averagePARMin_Season],
+                    "Avg PR/min Season:": [averagePRMin_Season],
+                    "Avg PA/min Season:": [averagePAMin_Season]})
 
 
 # Function to calculate all the averages for certain amount of games
@@ -120,27 +139,40 @@ def create_averages(val):
     avgPAR = round(sum(PAR[:val]) / val, 1)
     avgPA = round(sum(PA[:val]) / val, 1)
     avgPR = round(sum(PR[:val]) / val, 1)
+    avgMin = round(sum(gameLog.get_data_frames()[0]['MIN'][:val]) / val, 3)
+    avgPARperMin = round(avgPAR / avgMin, 3)
+    avgPRperMin = round(avgPR / avgMin, 3)
+    avgPAperMin = round(avgPA / avgMin, 3)
 
     # Create a dataframe that will later be concatenated
     averagesGames = pd.DataFrame({
           "Num Games:": [val],
+          "Avg Min:": [avgMin],
           "Avg PPG:": [avgPPG],
           "Avg AST:": [avgAST],
           "Avg REB:": [avgREB],
           "Avg PAR:": [avgPAR],
           "Avg PR:": [avgPR],
-          "Avg PA:": [avgPA]})
+          "Avg PA:": [avgPA],
+          "Avg PAR/min:": [avgPARperMin],
+          "Avg PR/min:": [avgPRperMin],
+          "Avg PA/min:": [avgPAperMin]})
 
     print("\n")
     print("Averages for last " + str(val) + " games: ",
+          "\nAvg Min:", avgMin,
           "\nAvg PPG:", avgPPG,
           "\nAvg AST:", avgAST,
           "\nAvg REB:", avgREB,
           "\nAvg PAR:", avgPAR,
           "\nAvg PR:", avgPR,
-          "\nAvg PA:", avgPA)
+          "\nAvg PA:", avgPA,
+          "\nAvg PAR/min:", avgPARperMin,
+          "\nAvg PR/min:", avgPRperMin,
+          "\nAvg PA/min:", avgPAperMin)
 
     return averagesGames
+
 
 fiveGames = create_averages(5)
 tenGames = create_averages(10)
@@ -251,8 +283,8 @@ for threshold in thresholds:
     # Add it to the large dataframe
     allOddsDataFrame = allOddsDataFrame._append(combinedDataFrame)
 
-outputDataFrame.to_csv("GameLog.csv", index=False)
-summarizedSeasonDataFrame.to_csv("SeasonSummarized.csv", index=False)
-summarizedGamesDataFrame.to_csv("GamesSummarized.csv", index=False)
-allOddsDataFrame.to_csv("OddsSummarized.csv", index=False)
+outputDataFrame.to_csv("output/GameLog.csv", index=False)
+summarizedSeasonDataFrame.to_csv("output/SeasonSummarized.csv", index=False)
+summarizedGamesDataFrame.to_csv("output/GamesSummarized.csv", index=False)
+allOddsDataFrame.to_csv("output/OddsSummarized.csv", index=False)
 
