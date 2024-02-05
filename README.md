@@ -16,3 +16,10 @@ The .csv files found in the repository are what the outputs look like.
 https://github.com/swar/nba_api/tree/master
 
 The above GitHub repository is where the NBA API is from. Please visit that repository for the source code and implementation.
+
+
+## Updates and Versions
+
+main_v1 and main_v2 allowed users to choose what year to find relavent stasitics for players.
+
+main_v3 only selects statistics from the current season. Easier to use and more useful.
