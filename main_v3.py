@@ -5,8 +5,8 @@
 # Import all necessary data
 from math import floor
 
-from nba_api.stats.endpoints import playergamelog
-from nba_api.stats.library import data
+from NBA_API.src.nba_api.stats.endpoints import playergamelog
+from NBA_API.src.nba_api.stats.library import data
 
 import pandas as pd
 

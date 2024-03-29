@@ -1,6 +1,6 @@
-from nba_api.stats.endpoints._base import Endpoint
-from nba_api.stats.library.http import NBAStatsHTTP
-from nba_api.stats.library.parameters import GameSegmentNullable, LastNGamesNullable, LeagueIDNullable, LocationNullable, MonthNullable, OutcomeNullable, PerModeSimpleNullable, PeriodNullable, SeasonNullable, SeasonSegmentNullable, SeasonTypeNullable, ShotClockRangeNullable, ConferenceNullable, DivisionNullable
+from NBA_API.src.nba_api.stats.endpoints._base import Endpoint
+from NBA_API.src.nba_api.stats.library.http import NBAStatsHTTP
+from NBA_API.src.nba_api.stats.library.parameters import GameSegmentNullable, LastNGamesNullable, LeagueIDNullable, LocationNullable, MonthNullable, OutcomeNullable, PerModeSimpleNullable, PeriodNullable, SeasonNullable, SeasonSegmentNullable, SeasonTypeNullable, ShotClockRangeNullable, ConferenceNullable, DivisionNullable
 
 
 class PlayerGameLogs(Endpoint):

@@ -1,5 +1,5 @@
-from nba_api.live.nba.endpoints._base import Endpoint
-from nba_api.live.nba.library.http import NBALiveHTTP
+from NBA_API.src.nba_api.live.nba.endpoints._base import Endpoint
+from NBA_API.src.nba_api.live.nba.library.http import NBALiveHTTP
 
 class PlayByPlay(Endpoint):
     endpoint_url = 'playbyplay/playbyplay_{game_id}.json'

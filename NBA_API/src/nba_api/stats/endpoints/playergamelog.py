@@ -1,6 +1,6 @@
-from nba_api.stats.endpoints._base import Endpoint
-from nba_api.stats.library.http import NBAStatsHTTP
-from nba_api.stats.library.parameters import Season, SeasonTypeAllStar, LeagueIDNullable
+from NBA_API.src.nba_api.stats.endpoints._base import Endpoint
+from NBA_API.src.nba_api.stats.library.http import NBAStatsHTTP
+from NBA_API.src.nba_api.stats.library.parameters import Season, SeasonTypeAllStar, LeagueIDNullable
 
 
 class PlayerGameLog(Endpoint):
