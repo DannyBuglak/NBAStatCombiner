@@ -44,7 +44,7 @@ print("\n -> Player Selected: " + playerName + " <- ")
 # Find the player id
 playerId = data.players[playerIndex][0]
 
-season = "2025-26"
+season = "2025"
 
 pd.set_option('display.max_columns', None)          # Have all cols be available
 pd.set_option('display.max_rows', None)             # Have all rows be available
